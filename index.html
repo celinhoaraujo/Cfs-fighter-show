@@ -22,6 +22,7 @@ const INITIAL=[['Gilmar “Abelha” Lima',18],['Rodrigo “Boliche” Monteiro'
 const KEY='cfs_official_v10';
 const fresh=()=>({version:'CFS-ALM-V1',year:2027,nextEvent:1,seasonEvents:0,selected:[],champion:null,officialRanking:null,fighters:INITIAL.map((d,i)=>{let a={};ATTR.forEach(([k],j)=>a[k]=60+((i*17+j*11+i*j)%41));return{id:i,name:d[0],age:d[1],attrs:a,w:0,l:0,draw:0,ko:0,tko:0,sub:0,dec:0,bouts:[],annualFights:0,active:true}}),events:[],log:'Organização fundada. Valores de atributos iniciais são provisórios porque o almanaque não trouxe atributos individuais.'});
 let state;try{state=JSON.parse(localStorage.getItem(KEY))||fresh()}catch(e){state=fresh()}let tab='card',editId=null,installPrompt=null;
+const root=document.querySelector('main');
 const $=id=>document.getElementById(id),esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),f=id=>state.fighters.find(x=>x.id===id),avg=x=>Math.round(ATTR.reduce((n,a)=>n+x[0]&&n+x.attrs[a[0]],0)/ATTR.length);
 function average(x){return Math.round(ATTR.reduce((n,a)=>n+x.attrs[a[0]],0)/ATTR.length)}function record(x){return `${x.w}-${x.l}-${x.draw}`}function fights(){return state.events.reduce((n,e)=>n+e.fights.length,0)}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));$('status').textContent='Salvamento automático concluído neste dispositivo.'}catch(e){$('status').textContent='Não foi possível confirmar o salvamento local. Exporte um backup agora.'}}
